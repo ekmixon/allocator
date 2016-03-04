@@ -28,5 +28,5 @@ where N is an incrementing numerical value.
 ## Why don't you require to add details about the vulnerability before publication?
 
 shvi-allocation is an identifier allocation system supporting security researchers to uniquely identify software
-and hardware vulnerabilities. The shvi-allocation system don't store any information about the security vulnerability
+and hardware vulnerabilities. The shvi-allocation system doesn't store any information about the security vulnerability
 before that the requester decided to publish the vulnerability.

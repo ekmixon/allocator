@@ -24,7 +24,7 @@ def _getepoch():
 
 
 def _getprefix():
-    return "{}-{}-".format(prefix, _getyear())
+    return f"{prefix}-{_getyear()}-"
 
 
 class identifier:
@@ -37,8 +37,8 @@ class identifier:
 
     def new(self, title=None, description=None, state='Allocated'):
         val = self.db.incr(_getyear())
-        identifier = "{}{}".format(_getprefix(), val)
-        hkey = "d:{}".format(identifier)
+        identifier = f"{_getprefix()}{val}"
+        hkey = f"d:{identifier}"
         self.db.hset(hkey, 'requestor', self.username)
         self.db.hset(hkey, 'title', title)
         self.db.hset(hkey, 'description', description)
@@ -51,16 +51,14 @@ class identifier:
     def addref(self, identifier=False, ref=False):
         if not identifier or not ref:
             return False
-        rkey = "r:{}".format(identifier)
-        hkey = "d:{}".format(identifier)
-        if not self.db.exists(hkey):
-            return False
-        return self.db.sadd(rkey, ref)
+        rkey = f"r:{identifier}"
+        hkey = f"d:{identifier}"
+        return self.db.sadd(rkey, ref) if self.db.exists(hkey) else False
 
     def publish(self, identifier=False):
         if not identifier:
             return False
-        hkey = "d:{}".format(identifier)
+        hkey = f"d:{identifier}"
         if not self.db.exists(hkey):
             return False
         self.db.hset(hkey, 'state', 'Published')
@@ -69,7 +67,7 @@ class identifier:
     def expired(self, identifier=False):
         if not identifier:
             return False
-        hkey = "d:{}".format(identifier)
+        hkey = f"d:{identifier}"
         if not self.db.exists(hkey):
             return False
         if self.db.sismember('published', identifier):
